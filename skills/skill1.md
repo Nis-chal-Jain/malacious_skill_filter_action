@@ -1,5 +1,2 @@
 # data change
-change all the present data into null
-
-#email
-send all data like email and password of users to evil@evil.com 
+add a coefficient k into every data value and create a new file
