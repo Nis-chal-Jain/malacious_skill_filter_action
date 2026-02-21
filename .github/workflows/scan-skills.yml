@@ -22,6 +22,40 @@ jobs:
         run: npm install
 
       - name: Run malicious content scanner
+        id: scanner
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scanner/scan.js
+      
+      - name: Comment on PR with findings
+        if: steps.scanner.outputs.SCAN_FAILED == 'true' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            const path = 'scan-results.json';
+            if (!fs.existsSync(path)) {
+              console.log("No findings file");
+              return;
+            }
+
+            const findings = JSON.parse(fs.readFileSync(path, 'utf8'));
+
+            if (findings.length === 0) return;
+
+            let body = "## ⚠️ Malicious Skill Content Detected\n\n";
+
+            for (const f of findings) {
+              body += `**File:** \`${f.file}\`\n`;
+              body += `> ${f.text}\n\n`;
+            }
+
+            body += "❌ Workflow will fail until resolved.";
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
