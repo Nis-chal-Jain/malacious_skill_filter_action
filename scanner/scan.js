@@ -7,7 +7,7 @@ import { GoogleGenAI } from "@google/genai";
 
 // Gemini client
 const genAI = new GoogleGenAI({});
-const model = "gemini-3-flash-preview";
+const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
 
 const SKILLS_DIR = path.join(process.cwd(), "skills");
 
@@ -40,8 +40,8 @@ Content to analyze:
 ${content}`;
 
   const result = await genAI.models.generateContent({
-    model : model,
-    contents:prompt,
+    model: model,
+    contents: prompt,
   });
   const text = result.text.trim();
 
@@ -78,8 +78,16 @@ async function main() {
     process.exit(0);
   }
 
-  const results = await Promise.all(files.map(scanFile));
+  const settled = await Promise.allSettled(files.map(scanFile));
 
+  const results = settled.map((r, i) => {
+    if (r.status === "rejected") {
+      console.error(`  ❌ Error scanning ${files[i]}: ${r.reason.message}`);
+      return true;
+    }
+    return r.value;
+  });
+  
   if (results.some(Boolean)) {
     console.log("❌ Failing workflow — malicious content found");
     process.exit(1);
