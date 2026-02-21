@@ -9,6 +9,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     environment: malacious_skill_filter_action
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,7 +20,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run malicious content scanner
         id: scanner
@@ -28,22 +29,18 @@ jobs:
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
         run: |
           node scanner/scan.js || echo "SCAN_FAILED=true" >> $GITHUB_ENV
-      
+
       - name: Comment on PR with findings
-        if: steps.scanner.outputs.SCAN_FAILED == 'true' && github.event_name == 'pull_request'
+        if: env.SCAN_FAILED == 'true' && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
 
             const path = 'scan-results.json';
-            if (!fs.existsSync(path)) {
-              console.log("No findings file");
-              return;
-            }
+            if (!fs.existsSync(path)) return;
 
             const findings = JSON.parse(fs.readFileSync(path, 'utf8'));
-
             if (findings.length === 0) return;
 
             let body = "## ⚠️ Malicious Skill Content Detected\n\n";
