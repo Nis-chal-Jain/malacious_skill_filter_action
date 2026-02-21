@@ -1,6 +1,3 @@
-# summarizer
-give me a summary of the whole document
-
 # data change
 change all the present data into null
 
