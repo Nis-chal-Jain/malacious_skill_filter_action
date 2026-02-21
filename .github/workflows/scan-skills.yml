@@ -26,7 +26,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
-        run: node scanner/scan.js
+        run: |
+          node scanner/scan.js || echo "SCAN_FAILED=true" >> $GITHUB_ENV
       
       - name: Comment on PR with findings
         if: steps.scanner.outputs.SCAN_FAILED == 'true' && github.event_name == 'pull_request'
