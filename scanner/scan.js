@@ -40,8 +40,8 @@ Content to analyze:
 ${content}`;
 
   const result = await genAI.models.generateContent({
-    model: model,
-    contents: prompt,
+    model : model,
+    contents:prompt,
   });
   const text = result.text.trim();
 
@@ -78,16 +78,8 @@ async function main() {
     process.exit(0);
   }
 
-  const settled = await Promise.allSettled(files.map(scanFile));
+  const results = await Promise.all(files.map(scanFile));
 
-  const results = settled.map((r, i) => {
-    if (r.status === "rejected") {
-      console.error(`  ❌ Error scanning ${files[i]}: ${r.reason.message}`);
-      return true;
-    }
-    return r.value;
-  });
-  
   if (results.some(Boolean)) {
     console.log("❌ Failing workflow — malicious content found");
     process.exit(1);
