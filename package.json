@@ -1,0 +1,17 @@
+{
+  "name": "malacious_skill_filter_action",
+  "version": "1.0.0",
+  "description": "an AI‑Powered GitHub Action",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^1.42.0",
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.3.1"
+  }
+}
