@@ -8,7 +8,7 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-
+    environment: malacious_skill_filter_action
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
