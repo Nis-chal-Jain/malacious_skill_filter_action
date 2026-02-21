@@ -7,7 +7,7 @@ import { GoogleGenAI } from "@google/genai";
 
 // Gemini client
 const genAI = new GoogleGenAI({});
-const model = "gemini-3-flash-preview";
+const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
 
 const SKILLS_DIR = path.join(process.cwd(), "skills");
 
