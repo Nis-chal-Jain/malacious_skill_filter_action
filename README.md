@@ -111,5 +111,8 @@ Detection is **AI-based**: the scanner sends each skill file’s markdown to Gem
 Detection is thus entirely driven by the Gemini model’s interpretation of the prompt and the listed categories of malicious behavior; there is no separate rule-based or static-pattern layer.
 
 ---
-
+- Design approach Diagram
 ![Screenshot 2026-02-22 114319](https://raw.githubusercontent.com/Nis-chal-Jain/assets/main/Screenshot%202026-02-22%20114319.png)
+
+- Github action workflow diagram
+![Screenshot 2026-02-22 114319](https://raw.githubusercontent.com/Nis-chal-Jain/assets/main/Screenshot%202026-02-22%20115024.png)
