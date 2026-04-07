@@ -112,6 +112,7 @@ Detection is thus entirely driven by the Gemini model’s interpretation of the 
 
 ---
 - Design approach Diagram
+<!-- The diagram below is outdated due to refactoring. It should be updated to show `scanner/scan.js` calling `scanner/analyzeContent.js`, which then interacts with Gemini AI. -->
 ![Screenshot 2026-02-22 114319](https://raw.githubusercontent.com/Nis-chal-Jain/assets/main/Screenshot%202026-02-22%20114319.png)
 
 - Github action workflow diagram
